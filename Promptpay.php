@@ -17,8 +17,8 @@ class Promptpay {
     var $amount = '109.50';
     var $prefixCurrencyId = '5303';
     var $currencyId = '764'; //THB (ISO 4217)
-    var $prefixCheckSum = '6304';
-    var $checkSum;
+    var $prefixChecksum = '6304';
+    var $checksum;
     var $polynomial = '0x1021';
     var $crc = '0xFFFF';
 
@@ -30,7 +30,7 @@ class Promptpay {
         if(strlen($checksum) < 4) {
             $checksum = '0'.$checksum;
         }
-        
+
         return strtoupper($checksum);
     }
 
@@ -42,7 +42,7 @@ class Promptpay {
             $this->prefixCountryId.$this->countryId.
             $this->prefixAmount.$this->amount.
             $this->prefixCurrencyId.$this->currencyId.
-            $this->prefixCheckSum;
+            $this->prefixChecksum;
     }
 
     function generateQRData() {
@@ -52,20 +52,20 @@ class Promptpay {
             $this->merchantPromptpayType.$this->prefixMerchantPromptpayId.$this->merchantPromptpayId.
             $this->prefixCountryId.$this->countryId.
             $this->prefixCurrencyId.$this->currencyId.
-            $this->prefixCheckSum;
+            $this->prefixChecksum;
     }
 
     function generateQRWithAmountPlainText() {
         $qrData = $this->generateQRDataWithAmount();
-        $qrCheckSum = $this->generateCheckSum($qrData);
+        $qrChecksum = $this->generateCheckSum($qrData);
 
-        return $qrData.$qrCheckSum;
+        return $qrData.$qrChecksum;
     }
 
     function generateQRPlainText() {
         $qrData = $this->generateQRData();
-        $qrCheckSum = $this->generateCheckSum($qrData);
+        $qrChecksum = $this->generateCheckSum($qrData);
 
-        return $qrData.$qrCheckSum;
+        return $qrData.$qrChecksum;
     }
 }
