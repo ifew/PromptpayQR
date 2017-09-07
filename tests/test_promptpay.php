@@ -1,7 +1,7 @@
 <?php
 include "../Promptpay.php";
 
-class Test_promptpay extends PHPUnit_Framework_TestCase {
+class TestPromptpay extends PHPUnit_Framework_TestCase {
 
 	var $promptpay;
 	
@@ -19,4 +19,14 @@ class Test_promptpay extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $this->promptpay->generateQRPlainText());
 	}
 	
+	public function testDefaultDataExcludeCheckSumWithAmount() {
+		$expected = '00020101021129370016A000000677010111011300668399999995802TH5406109.5053037646304';
+		$this->assertEquals($expected, $this->promptpay->generateQRDataWithAmount());
+	}
+
+	public function testDefaultDataWithAmount() {
+		$expected = '00020101021129370016A000000677010111011300668399999995802TH5406109.50530376463040779';
+		$this->assertEquals($expected, $this->promptpay->generateQRWithAmountPlainText());
+	}
 }
+

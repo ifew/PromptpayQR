@@ -13,6 +13,8 @@ class Promptpay {
     var $merchantPromptpayId = '0066839999999'; // mobile start with 00 and 66 and number not start with 0, citizen use full length
     var $prefixCountryId = '5802';
     var $countryId = 'TH';
+    var $prefixAmount = '5406';
+    var $amount = '109.50';
     var $prefixCurrencyId = '5303';
     var $currencyId = '764'; //THB (ISO 4217)
     var $prefixCheckSum = '6304';
@@ -24,19 +26,40 @@ class Promptpay {
         include_once("CRC16CCIT.php");
         $cs = new Crc16CCIT();
         $checksum = $cs->calculate($qrData);
+
+        if(strlen($checksum) < 4) {
+            $checksum = '0'.$checksum;
+        }
+        
         return strtoupper($checksum);
     }
 
+    function generateQRDataWithAmount() {
+        return $this->prefixVersion.$this->version.
+            $this->prefixSellType.$this->sellType.
+            $this->prefixMerchant.$this->prefixMerchantApplicationId.$this->merchantApplicationId.
+            $this->merchantPromptpayType.$this->prefixMerchantPromptpayId.$this->merchantPromptpayId.
+            $this->prefixCountryId.$this->countryId.
+            $this->prefixAmount.$this->amount.
+            $this->prefixCurrencyId.$this->currencyId.
+            $this->prefixCheckSum;
+    }
+
     function generateQRData() {
-        $qrData = $this->prefixVersion.$this->version.
+        return $this->prefixVersion.$this->version.
             $this->prefixSellType.$this->sellType.
             $this->prefixMerchant.$this->prefixMerchantApplicationId.$this->merchantApplicationId.
             $this->merchantPromptpayType.$this->prefixMerchantPromptpayId.$this->merchantPromptpayId.
             $this->prefixCountryId.$this->countryId.
             $this->prefixCurrencyId.$this->currencyId.
             $this->prefixCheckSum;
+    }
 
-        return $qrData;
+    function generateQRWithAmountPlainText() {
+        $qrData = $this->generateQRDataWithAmount();
+        $qrCheckSum = $this->generateCheckSum($qrData);
+
+        return $qrData.$qrCheckSum;
     }
 
     function generateQRPlainText() {
