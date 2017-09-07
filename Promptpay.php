@@ -1,6 +1,7 @@
 <?php
 
-class Promptpay {
+class Promptpay
+{
     var $prefixVersion = '0002';
     var $version = '01'; //fixed
     var $prefixSellType = '0102';
@@ -22,19 +23,21 @@ class Promptpay {
     var $polynomial = '0x1021';
     var $crc = '0xFFFF';
 
-    function generateCheckSum($qrData) {
+    function generateCheckSum($qrData)
+    {
         include_once("CRC16CCIT.php");
         $cs = new Crc16CCIT();
-        $checksum = $cs->calculate($qrData);
+        $checksumResult = $cs->calculate($qrData);
 
-        if(strlen($checksum) < 4) {
-            $checksum = '0'.$checksum;
+        if (strlen($checksumResult) < 4) {
+            $checksumResult = '0'.$checksumResult;
         }
 
-        return strtoupper($checksum);
+        return strtoupper($checksumResult);
     }
 
-    function generateQRDataWithAmount() {
+    function generateQRDataWithAmount()
+    {
         return $this->prefixVersion.$this->version.
             $this->prefixSellType.$this->sellType.
             $this->prefixMerchant.$this->prefixMerchantApplicationId.$this->merchantApplicationId.
@@ -45,7 +48,8 @@ class Promptpay {
             $this->prefixChecksum;
     }
 
-    function generateQRData() {
+    function generateQRData()
+    {
         return $this->prefixVersion.$this->version.
             $this->prefixSellType.$this->sellType.
             $this->prefixMerchant.$this->prefixMerchantApplicationId.$this->merchantApplicationId.
@@ -55,14 +59,16 @@ class Promptpay {
             $this->prefixChecksum;
     }
 
-    function generateQRWithAmountPlainText() {
+    function generateQRWithAmountPlainText()
+    {
         $qrData = $this->generateQRDataWithAmount();
         $qrChecksum = $this->generateCheckSum($qrData);
 
         return $qrData.$qrChecksum;
     }
 
-    function generateQRPlainText() {
+    function generateQRPlainText()
+    {
         $qrData = $this->generateQRData();
         $qrChecksum = $this->generateCheckSum($qrData);
 
