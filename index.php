@@ -1,8 +1,8 @@
 <?php
 include_once("vendor/autoload.php");
-use ThaiPromptpay\Promptpay;
+use ThaiPromptpay\PromptpayQR;
 
-$qr = new Promptpay;
+$qr = new PromptpayQR;
 $qr->setPromptpayType('02');
 $qr->setPromptpayID('4419928285542');
 $qr->setAmount(200.50);

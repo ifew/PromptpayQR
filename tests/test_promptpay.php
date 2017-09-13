@@ -1,6 +1,6 @@
 <?php
 include_once("../vendor/autoload.php");
-use ThaiPromptpay\Promptpay;
+use ThaiPromptpay\PromptpayQR;
 
 class TestPromptpay extends PHPUnit_Framework_TestCase
 {
@@ -9,7 +9,7 @@ class TestPromptpay extends PHPUnit_Framework_TestCase
     
     public function setup()
     {
-        $this->promptpay = new Promptpay;
+        $this->promptpay = new PromptpayQR;
     }
 
     public function testDefaultAmount()

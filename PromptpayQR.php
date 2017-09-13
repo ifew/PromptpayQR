@@ -4,7 +4,7 @@ include_once("vendor/autoload.php");
 use SimpleSoftwareIO\QrCode\BaconQrCodeGenerator;
 use Crc16CCIT\Crc16CCIT;
 
-class Promptpay
+class PromptpayQR
 {
     var $prefixVersion = '0002';
     var $version = '01'; //fixed
@@ -28,7 +28,6 @@ class Promptpay
     var $crc = '0xFFFF';
     
     var $qrData;
-    var $qrChecksum;
 
     function setPromptpayType($type) {
         $this->merchantPromptpayType = $type;
