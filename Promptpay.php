@@ -1,4 +1,8 @@
 <?php
+namespace ThaiPromptpay;
+include_once("vendor/autoload.php");
+use SimpleSoftwareIO\QrCode\BaconQrCodeGenerator;
+use Crc16CCIT\Crc16CCIT;
 
 class Promptpay
 {
@@ -22,12 +26,31 @@ class Promptpay
     var $checksum;
     var $polynomial = '0x1021';
     var $crc = '0xFFFF';
+    
+    var $qrData;
+    var $qrChecksum;
 
-    function generateCheckSum($qrData)
+    function setPromptpayType($type) {
+        $this->merchantPromptpayType = $type;
+    }
+
+    function setPromptpayID($id) {
+        $this->merchantPromptpayId = $id;
+    }
+
+    function setAmount($amount) {
+        $this->amount = number_format(round($amount, 2), 2);
+    }
+
+    function getQR() {
+        $qrcode = new BaconQrCodeGenerator;
+        return $qrcode->size(500)->generate($this->generateQRwithChecksum());
+    }
+
+    function generateCheckSum()
     {
-        include_once("CRC16CCIT.php");
         $cs = new Crc16CCIT();
-        $checksumResult = $cs->calculate($qrData);
+        $checksumResult = $cs->calculate($this->qrData);
 
         if (strlen($checksumResult) < 4) {
             $checksumResult = '0'.$checksumResult;
@@ -36,8 +59,13 @@ class Promptpay
         return strtoupper($checksumResult);
     }
 
-    function generateQRDataWithAmount()
+    function generateQR()
     {
+        if(empty($this->amount) || ($this->amount == 0.00)) {
+            $this->prefixAmount = '';
+            $this->amount = '';
+        }
+
         return $this->prefixVersion.$this->version.
             $this->prefixSellType.$this->sellType.
             $this->prefixMerchant.$this->prefixMerchantApplicationId.$this->merchantApplicationId.
@@ -48,30 +76,11 @@ class Promptpay
             $this->prefixChecksum;
     }
 
-    function generateQRData()
+    function generateQRwithChecksum()
     {
-        return $this->prefixVersion.$this->version.
-            $this->prefixSellType.$this->sellType.
-            $this->prefixMerchant.$this->prefixMerchantApplicationId.$this->merchantApplicationId.
-            $this->merchantPromptpayType.$this->prefixMerchantPromptpayId.$this->merchantPromptpayId.
-            $this->prefixCountryId.$this->countryId.
-            $this->prefixCurrencyId.$this->currencyId.
-            $this->prefixChecksum;
-    }
+        $this->qrData = $this->generateQR();
+        $qrChecksum = $this->generateCheckSum($this->qrData);
 
-    function generateQRWithAmountPlainText()
-    {
-        $qrData = $this->generateQRDataWithAmount();
-        $qrChecksum = $this->generateCheckSum($qrData);
-
-        return $qrData.$qrChecksum;
-    }
-
-    function generateQRPlainText()
-    {
-        $qrData = $this->generateQRData();
-        $qrChecksum = $this->generateCheckSum($qrData);
-
-        return $qrData.$qrChecksum;
+        return $this->qrData.$qrChecksum;
     }
 }

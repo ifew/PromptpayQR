@@ -1,0 +1,22 @@
+{
+    "name": "ThaiPromptpay",
+    "description": "PHP generate PrompPay QR Code for pay on Thailand Banking application.",
+    "keywords": ["qrcode", "promptpay", "promptpay-thailand", "thailand", "bot"],
+    "homepage": "http://www.myifew.com",
+    "license" : "MIT",
+    "authors": [
+        {
+            "name": "iFew",
+            "email": "chitpong@gmail.com"
+        }
+    ],
+    "require": {
+        "simplesoftwareio/simple-qrcode": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ThaiPromptpay\\": "",
+            "Crc16CCIT\\": ""
+        }
+    }
+}

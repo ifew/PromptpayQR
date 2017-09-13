@@ -1,5 +1,5 @@
 <?php
-
+namespace Crc16CCIT;
 /**
  * Calculate CRC16-CCIT checksum
  * Code ported to PHP from Java
