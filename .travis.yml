@@ -4,4 +4,4 @@ php:
   - '7.1'
 
 script:
-    - vendor/bin/phpunit tests/test_promptpay.php --coverage-clover=coverage.xml
+    - phpunit tests/test_promptpay.php --coverage-clover=coverage.xml
